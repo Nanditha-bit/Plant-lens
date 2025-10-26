@@ -11,9 +11,9 @@ import base64
 BACKEND_URL = "https://ayurved-detect.preview.emergentagent.com/api"
 
 def create_realistic_test_image():
-    """Create a more realistic test image (simple green square to simulate a leaf)"""
-    # This is a small green square PNG in base64 - simulates a basic plant image
-    return "/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/8A8A"
+    """Create a simple test image (1x1 pixel PNG)"""
+    # Simple 1x1 pixel PNG in base64 (same as in backend_test.py that worked)
+    return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
 
 def test_identification_with_auth():
     """Test plant identification with proper authentication"""
