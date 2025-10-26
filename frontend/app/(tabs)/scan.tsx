@@ -20,21 +20,34 @@ export default function ScanScreen() {
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const [hasPermission, setHasPermission] = useState(false);
+
+  useEffect(() => {
+    requestPermissions();
+  }, []);
 
   const requestPermissions = async () => {
-    const { status: cameraStatus } =
-      await ImagePicker.requestCameraPermissionsAsync();
-    const { status: galleryStatus } =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    try {
+      const { status: cameraStatus } =
+        await ImagePicker.requestCameraPermissionsAsync();
+      const { status: galleryStatus } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (cameraStatus !== 'granted' || galleryStatus !== 'granted') {
-      Alert.alert(
-        'Permission Required',
-        'Please grant camera and gallery permissions to use this feature.'
-      );
-      return false;
+      if (cameraStatus === 'granted' && galleryStatus === 'granted') {
+        setHasPermission(true);
+      } else {
+        Alert.alert(
+          'Permission Required',
+          'Camera and gallery access is needed to identify plants. Please enable permissions in your device settings.',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Open Settings', onPress: () => requestPermissions() }
+          ]
+        );
+      }
+    } catch (error) {
+      console.error('Permission error:', error);
     }
-    return true;
   };
 
   const pickImageFromGallery = async () => {
