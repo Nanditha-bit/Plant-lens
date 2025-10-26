@@ -51,8 +51,10 @@ export default function ScanScreen() {
   };
 
   const pickImageFromGallery = async () => {
-    const hasPermission = await requestPermissions();
-    if (!hasPermission) return;
+    if (!hasPermission) {
+      await requestPermissions();
+      return;
+    }
 
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -73,8 +75,10 @@ export default function ScanScreen() {
   };
 
   const takePhoto = async () => {
-    const hasPermission = await requestPermissions();
-    if (!hasPermission) return;
+    if (!hasPermission) {
+      await requestPermissions();
+      return;
+    }
 
     try {
       const result = await ImagePicker.launchCameraAsync({
