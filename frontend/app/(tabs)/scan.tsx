@@ -141,8 +141,15 @@ export default function ScanScreen() {
             <Text style={styles.emptyIcon}>📸</Text>
             <Text style={styles.emptyTitle}>Identify a Plant</Text>
             <Text style={styles.emptyText}>
-              Take a photo or select from gallery to identify the plant
+              Use live camera to scan plants in real-time or choose from gallery
             </Text>
+
+            <TouchableOpacity 
+              style={styles.button} 
+              onPress={() => router.push('/camera')}
+            >
+              <Text style={styles.buttonText}>📹 Live Camera Scan</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={takePhoto}>
               <Text style={styles.buttonText}>📷 Take Photo</Text>
