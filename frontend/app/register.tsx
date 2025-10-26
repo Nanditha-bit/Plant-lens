@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,51 +13,41 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { login, isAuthenticated } from '../utils/auth';
+import { register } from '../utils/auth';
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    const authenticated = await isAuthenticated();
-    if (authenticated) {
-      router.replace('/(tabs)/home');
+  const handleRegister = async () => {
+    if (!username || !password || !confirmPassword) {
+      Alert.alert('Error', 'Please fill all fields');
+      return;
     }
-    setCheckingAuth(false);
-  };
 
-  const handleLogin = async () => {
-    if (!username || !password) {
-      Alert.alert('Error', 'Please enter username and password');
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert('Error', 'Password must be at least 6 characters');
       return;
     }
 
     setLoading(true);
-    const result = await login(username, password);
+    const result = await register(username, password);
     setLoading(false);
 
     if (result.success) {
       router.replace('/(tabs)/home');
     } else {
-      Alert.alert('Login Failed', result.error);
+      Alert.alert('Registration Failed', result.error);
     }
   };
-
-  if (checkingAuth) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4CAF50" />
-      </View>
-    );
-  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -68,15 +58,15 @@ export default function LoginScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.content}>
             <View style={styles.header}>
-              <Text style={styles.title}>🌿 Ayurvedic Plants</Text>
-              <Text style={styles.subtitle}>Identify & Learn About Medicinal Plants</Text>
+              <Text style={styles.title}>Create Account</Text>
+              <Text style={styles.subtitle}>Join to discover Ayurvedic plants</Text>
             </View>
 
             <View style={styles.form}>
               <Text style={styles.label}>Username</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter username"
+                placeholder="Choose a username"
                 value={username}
                 onChangeText={setUsername}
                 autoCapitalize="none"
@@ -86,30 +76,40 @@ export default function LoginScreen() {
               <Text style={styles.label}>Password</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter password"
+                placeholder="Create password (min 6 characters)"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
                 autoCapitalize="none"
               />
 
+              <Text style={styles.label}>Confirm Password</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                secureTextEntry
+                autoCapitalize="none"
+              />
+
               <TouchableOpacity
                 style={[styles.button, loading && styles.buttonDisabled]}
-                onPress={handleLogin}
+                onPress={handleRegister}
                 disabled={loading}
               >
                 {loading ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
-                  <Text style={styles.buttonText}>Login</Text>
+                  <Text style={styles.buttonText}>Register</Text>
                 )}
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.linkButton}
-                onPress={() => router.push('/register')}
+                onPress={() => router.back()}
               >
-                <Text style={styles.linkText}>Don't have an account? Register</Text>
+                <Text style={styles.linkText}>Already have an account? Login</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -122,12 +122,6 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#f5f5f5',
   },
   keyboardView: {
