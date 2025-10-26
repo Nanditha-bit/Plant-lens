@@ -40,13 +40,69 @@ class User(BaseModel):
 class Plant(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     name: str
+    sanskrit_name: str
     scientific_name: str
+    botanical_synonyms: List[str] = []
     family: str
+    vernacular_names: dict = {}  # {"Hindi": "name", "Telugu": "name", etc}
+    synonyms: List[dict] = []  # [{"name": "synonym", "reason": "description"}]
+    gana: List[dict] = []  # [{"author": "Charaka", "gana": "Deepaniya"}]
+    types: List[str] = []
+    
+    # Morphology
+    habit: str  # tree, shrub, herb
+    habitat: str
+    morphology: dict = {
+        "leaf": "",
+        "stem": "",
+        "flower": "",
+        "fruit": "",
+        "inflorescence": "",
+        "seeds": "",
+        "root": ""
+    }
+    
     description: str
     characteristics: List[str]
+    
+    # Ayurvedic Properties (Rasapanchaka)
+    rasa: List[str] = []  # Madhura, Amla, Lavana, Katu, Tikta, Kashaya
+    guna: List[str] = []  # Guru, Laghu, Snigdha, Ruksha, Ushna, Shita
+    virya: str = ""  # Ushna or Shita
+    vipaka: str = ""  # Madhura, Amla, or Katu
+    prabhava: str = ""  # Specific action
+    
+    # Therapeutic properties
+    dosha_karma: dict = {}  # {"Vata": "pacifies", "Pitta": "increases", "Kapha": "pacifies"}
+    karma: List[str] = []  # Deepana, Pachana, etc
+    indication: List[str] = []
+    
     medicinal_properties: List[str]
     uses: List[str]
+    therapeutic_uses: dict = {"internal": [], "external": []}
+    
+    # Parts and dosage
     parts_used: List[str]
+    dosage: dict = {}  # {"powder": "3-6g", "decoction": "50-100ml"}
+    
+    # Chemical and modern
+    chemical_constituents: List[str] = []
+    phyto_constituents: List[str] = []
+    modern_pharmacology: List[str] = []
+    research_updates: List[str] = []
+    
+    # Formulations and processing
+    formulations: List[str] = []
+    shodana: str = ""  # purification process if any
+    
+    # Safety
+    adulterants: List[str] = []
+    contraindications: List[str] = []
+    substitutes: List[str] = []
+    
+    # References
+    references: List[dict] = []  # [{"text": "text", "verse": "verse", "source": "source"}]
+    
     images_base64: List[str]
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
