@@ -21,10 +21,19 @@ export default function ScanScreen() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [hasPermission, setHasPermission] = useState(false);
+  const params = useLocalSearchParams();
 
   useEffect(() => {
     requestPermissions();
   }, []);
+
+  useEffect(() => {
+    // Handle image captured from live camera
+    if (params.capturedImage && typeof params.capturedImage === 'string') {
+      setImage(params.capturedImage);
+      setResult(null);
+    }
+  }, [params]);
 
   const requestPermissions = async () => {
     try {
