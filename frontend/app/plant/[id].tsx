@@ -103,45 +103,288 @@ export default function PlantDetailsScreen() {
 
         <View style={styles.content}>
           <Text style={styles.plantName}>{plant.name}</Text>
+          {plant.sanskrit_name && (
+            <Text style={styles.sanskritName}>{plant.sanskrit_name}</Text>
+          )}
           <Text style={styles.scientificName}>{plant.scientific_name}</Text>
           <Text style={styles.family}>Family: {plant.family}</Text>
 
+          {/* Vernacular Names */}
+          {plant.vernacular_names && Object.keys(plant.vernacular_names).length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>📍 Vernacular Names</Text>
+              {Object.entries(plant.vernacular_names).map(([lang, name], index) => (
+                <Text key={index} style={styles.text}>
+                  <Text style={styles.bold}>{lang}:</Text> {name as string}
+                </Text>
+              ))}
+            </View>
+          )}
+
+          {/* Synonyms */}
+          {plant.synonyms && plant.synonyms.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>🏷️ Sanskrit Synonyms</Text>
+              {plant.synonyms.map((syn: any, index: number) => (
+                <View key={index} style={styles.synonymItem}>
+                  <Text style={styles.boldText}>{syn.name}</Text>
+                  <Text style={styles.text}>{syn.reason}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Gana Classification */}
+          {plant.gana && plant.gana.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>📚 Classification (Gana)</Text>
+              {plant.gana.map((g: any, index: number) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  • <Text style={styles.bold}>{g.author}:</Text> {g.gana}
+                </Text>
+              ))}
+            </View>
+          )}
+
+          {/* Types */}
+          {plant.types && plant.types.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>🌿 Types/Varieties</Text>
+              {plant.types.map((type: string, index: number) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  • {type}
+                </Text>
+              ))}
+            </View>
+          )}
+
+          {/* Morphology */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Description</Text>
+            <Text style={styles.sectionTitle}>🔬 Morphology</Text>
+            {plant.habit && <Text style={styles.text}><Text style={styles.bold}>Habit:</Text> {plant.habit}</Text>}
+            {plant.habitat && <Text style={styles.text}><Text style={styles.bold}>Habitat:</Text> {plant.habitat}</Text>}
+            {plant.morphology && plant.morphology.root && (
+              <Text style={styles.text}><Text style={styles.bold}>Root:</Text> {plant.morphology.root}</Text>
+            )}
+            {plant.morphology && plant.morphology.stem && (
+              <Text style={styles.text}><Text style={styles.bold}>Stem:</Text> {plant.morphology.stem}</Text>
+            )}
+            {plant.morphology && plant.morphology.leaf && (
+              <Text style={styles.text}><Text style={styles.bold}>Leaf:</Text> {plant.morphology.leaf}</Text>
+            )}
+            {plant.morphology && plant.morphology.flower && (
+              <Text style={styles.text}><Text style={styles.bold}>Flower:</Text> {plant.morphology.flower}</Text>
+            )}
+            {plant.morphology && plant.morphology.inflorescence && (
+              <Text style={styles.text}><Text style={styles.bold}>Inflorescence:</Text> {plant.morphology.inflorescence}</Text>
+            )}
+            {plant.morphology && plant.morphology.fruit && (
+              <Text style={styles.text}><Text style={styles.bold}>Fruit:</Text> {plant.morphology.fruit}</Text>
+            )}
+            {plant.morphology && plant.morphology.seeds && (
+              <Text style={styles.text}><Text style={styles.bold}>Seeds:</Text> {plant.morphology.seeds}</Text>
+            )}
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>📖 Description</Text>
             <Text style={styles.text}>{plant.description}</Text>
           </View>
 
+          {/* Rasapanchaka - Ayurvedic Properties */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Characteristics</Text>
-            {plant.characteristics.map((item, index) => (
+            <Text style={styles.sectionTitle}>⚗️ Rasapanchaka (Ayurvedic Properties)</Text>
+            {plant.rasa && plant.rasa.length > 0 && (
+              <Text style={styles.text}><Text style={styles.bold}>Rasa (Taste):</Text> {plant.rasa.join(', ')}</Text>
+            )}
+            {plant.guna && plant.guna.length > 0 && (
+              <Text style={styles.text}><Text style={styles.bold}>Guna (Quality):</Text> {plant.guna.join(', ')}</Text>
+            )}
+            {plant.virya && (
+              <Text style={styles.text}><Text style={styles.bold}>Virya (Potency):</Text> {plant.virya}</Text>
+            )}
+            {plant.vipaka && (
+              <Text style={styles.text}><Text style={styles.bold}>Vipaka (Post-digestive):</Text> {plant.vipaka}</Text>
+            )}
+            {plant.prabhava && (
+              <Text style={styles.text}><Text style={styles.bold}>Prabhava (Special action):</Text> {plant.prabhava}</Text>
+            )}
+          </View>
+
+          {/* Dosha Karma */}
+          {plant.dosha_karma && Object.keys(plant.dosha_karma).length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>⚖️ Dosha Karma (Effect on Doshas)</Text>
+              {Object.entries(plant.dosha_karma).map(([dosha, effect], index) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  • <Text style={styles.bold}>{dosha}:</Text> {effect as string}
+                </Text>
+              ))}
+            </View>
+          )}
+
+          {/* Karma (Actions) */}
+          {plant.karma && plant.karma.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>💊 Karma (Pharmacological Actions)</Text>
+              <Text style={styles.text}>{plant.karma.join(', ')}</Text>
+            </View>
+          )}
+
+          {/* Indications */}
+          {plant.indication && plant.indication.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>🎯 Indications</Text>
+              {plant.indication.map((ind: string, index: number) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  • {ind}
+                </Text>
+              ))}
+            </View>
+          )}
+
+          {/* Medicinal Properties */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>💚 Medicinal Properties</Text>
+            {plant.medicinal_properties.map((item: string, index: number) => (
               <Text key={index} style={styles.bulletPoint}>
                 • {item}
               </Text>
             ))}
           </View>
 
+          {/* Therapeutic Uses */}
+          {plant.therapeutic_uses && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>🏥 Therapeutic Uses</Text>
+              {plant.therapeutic_uses.internal && plant.therapeutic_uses.internal.length > 0 && (
+                <View>
+                  <Text style={styles.subTitle}>Internal:</Text>
+                  {plant.therapeutic_uses.internal.map((use: string, index: number) => (
+                    <Text key={index} style={styles.bulletPoint}>
+                      • {use}
+                    </Text>
+                  ))}
+                </View>
+              )}
+              {plant.therapeutic_uses.external && plant.therapeutic_uses.external.length > 0 && (
+                <View style={{marginTop: 8}}>
+                  <Text style={styles.subTitle}>External:</Text>
+                  {plant.therapeutic_uses.external.map((use: string, index: number) => (
+                    <Text key={index} style={styles.bulletPoint}>
+                      • {use}
+                    </Text>
+                  ))}
+                </View>
+              )}
+            </View>
+          )}
+
+          {/* Parts Used & Dosage */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Medicinal Properties</Text>
-            {plant.medicinal_properties.map((item, index) => (
-              <Text key={index} style={styles.bulletPoint}>
-                • {item}
-              </Text>
-            ))}
+            <Text style={styles.sectionTitle}>📏 Parts Used & Dosage</Text>
+            <Text style={styles.text}><Text style={styles.bold}>Parts:</Text> {plant.parts_used.join(', ')}</Text>
+            {plant.dosage && Object.keys(plant.dosage).length > 0 && (
+              <View style={{marginTop: 8}}>
+                <Text style={styles.bold}>Dosage:</Text>
+                {Object.entries(plant.dosage).map(([form, dose], index) => (
+                  <Text key={index} style={styles.text}>
+                    • {form}: {dose as string}
+                  </Text>
+                ))}
+              </View>
+            )}
           </View>
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Uses</Text>
-            {plant.uses.map((item, index) => (
-              <Text key={index} style={styles.bulletPoint}>
-                • {item}
-              </Text>
-            ))}
-          </View>
+          {/* Chemical Constituents */}
+          {plant.chemical_constituents && plant.chemical_constituents.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>🧪 Chemical Constituents</Text>
+              {plant.chemical_constituents.map((chem: string, index: number) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  • {chem}
+                </Text>
+              ))}
+            </View>
+          )}
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Parts Used</Text>
-            <Text style={styles.text}>{plant.parts_used.join(', ')}</Text>
-          </View>
+          {/* Modern Pharmacology */}
+          {plant.modern_pharmacology && plant.modern_pharmacology.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>🔬 Modern Pharmacology</Text>
+              {plant.modern_pharmacology.map((pharm: string, index: number) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  • {pharm}
+                </Text>
+              ))}
+            </View>
+          )}
+
+          {/* Formulations */}
+          {plant.formulations && plant.formulations.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>💊 Formulations</Text>
+              <Text style={styles.text}>{plant.formulations.join(', ')}</Text>
+            </View>
+          )}
+
+          {/* Shodana */}
+          {plant.shodana && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>⚗️ Shodana (Purification)</Text>
+              <Text style={styles.text}>{plant.shodana}</Text>
+            </View>
+          )}
+
+          {/* Research Updates */}
+          {plant.research_updates && plant.research_updates.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>🔍 Research Updates</Text>
+              {plant.research_updates.map((research: string, index: number) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  • {research}
+                </Text>
+              ))}
+            </View>
+          )}
+
+          {/* Contraindications */}
+          {plant.contraindications && plant.contraindications.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>⚠️ Contraindications</Text>
+              {plant.contraindications.map((contra: string, index: number) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  • {contra}
+                </Text>
+              ))}
+            </View>
+          )}
+
+          {/* Adulterants */}
+          {plant.adulterants && plant.adulterants.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>❌ Adulterants</Text>
+              {plant.adulterants.map((adult: string, index: number) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  • {adult}
+                </Text>
+              ))}
+            </View>
+          )}
+
+          {/* References */}
+          {plant.references && plant.references.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>📚 References</Text>
+              {plant.references.map((ref: any, index: number) => (
+                <View key={index} style={styles.referenceItem}>
+                  <Text style={styles.verse}>{ref.verse}</Text>
+                  <Text style={styles.text}>{ref.text}</Text>
+                  <Text style={styles.refSource}>- {ref.source}</Text>
+                </View>
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
